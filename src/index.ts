@@ -1,1 +1,1 @@
-export const Greeter = (name: string) => name;
+export * from './Boleto/index';
