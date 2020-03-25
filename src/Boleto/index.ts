@@ -1,4 +1,6 @@
-import { maskCleaner, typeMapping, differenceForNow } from '../utils/index';
+import {
+  maskCleaner, typeMapping, differenceForNow, identifyBank,
+} from '../utils/index';
 
 export class Boleto {
   private number: string
@@ -55,5 +57,11 @@ export class Boleto {
     if (!expirationDate) return null;
 
     return differenceForNow(expirationDate) > 0;
+  }
+
+  banks() {
+    const cod = this.number.substr(0, 3);
+
+    return identifyBank(cod);
   }
 }
