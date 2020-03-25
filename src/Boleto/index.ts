@@ -59,7 +59,7 @@ export class Boleto {
     return differenceForNow(expirationDate) > 0;
   }
 
-  verifyCod() {
+  banks() {
     const cod = this.number.substr(0, 3);
 
     return identifyBank(cod);
