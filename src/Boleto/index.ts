@@ -64,4 +64,9 @@ export class Boleto {
 
     return identifyBank(cod);
   }
+
+  amount() {
+    const valor = this.number.substr(-8, 8);
+    return (parseInt(valor, 10) / 100.0).toFixed(2);
+  }
 }
