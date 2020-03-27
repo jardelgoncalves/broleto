@@ -1,5 +1,5 @@
 import {
-  maskCleaner, typeMapping, differenceForNow, identifyBank,
+  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter,
 } from '../utils/index';
 
 export class Boleto {
@@ -63,5 +63,15 @@ export class Boleto {
     const cod = this.number.substr(0, 3);
 
     return identifyBank(cod);
+  }
+
+  amount() {
+    const value = this.number.substr(-8, 8);
+    return Number((parseInt(value, 10) / 100.0).toFixed(2));
+  }
+
+  prettyAmount() {
+    const value = this.amount();
+    return currencyFormatter(value);
   }
 }
