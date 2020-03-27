@@ -12,7 +12,7 @@ describe('Unit test Boleto/prettyAmount method', () => {
   });
 
   it('should return the pretty amount of the payment slip if the bar code is valid', () => {
-    const boleto = new Boleto('34195844100000020005000001233203186422147000');
+    const boleto = new Boleto('34195844100000020005000001233203186400023500');
     expect(boleto.prettyAmount()).toBe('R$ 20,00');
   });
 
