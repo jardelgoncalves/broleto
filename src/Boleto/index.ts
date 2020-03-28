@@ -1,5 +1,10 @@
 import {
-  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter,
+  maskCleaner,
+  typeMapping,
+  differenceForNow,
+  identifyBank,
+  currencyFormatter,
+  isValid,
 } from '../utils/index';
 
 export class Boleto {
@@ -73,5 +78,9 @@ export class Boleto {
   prettyAmount() {
     const value = this.amount();
     return currencyFormatter(value);
+  }
+
+  valid() {
+    return isValid(this.number);
   }
 }
