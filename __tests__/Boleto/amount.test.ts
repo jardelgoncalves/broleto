@@ -15,9 +15,4 @@ describe('Unit test Boleto/amount method', () => {
     const boleto = new Boleto('34195844100000020005000001233203186422147000');
     expect(boleto.amount()).toBe(20.00);
   });
-
-  it('should return null if payment slip is invalid', () => {
-    const boleto = new Boleto('11110000101111.11111111111111114584410000002000');
-    expect(boleto.amount()).toBe(null);
-  });
 });
