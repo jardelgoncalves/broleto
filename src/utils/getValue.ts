@@ -27,10 +27,9 @@ export const getValueForAgreementType = (number: string, codeType: string) => {
 
 export const getValue = (
   number: string,
-  type: 'INVALIDO' | 'BANCO' | 'ARRECADACAO',
-  codeType: 'LINHA DIGITAVEL' | 'CODIGO DE BARRAS',
+  type: 'BANCO' | 'ARRECADACAO' | string,
+  codeType: 'LINHA DIGITAVEL' | 'CODIGO DE BARRAS' | 'INVALIDO',
 ) => {
-  if (type === 'INVALIDO') return 0;
   if (type === 'BANCO') return getValueForBankType(number, codeType);
   if (type === 'ARRECADACAO') return getValueForAgreementType(number, codeType);
   return 0;
