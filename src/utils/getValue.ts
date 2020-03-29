@@ -25,7 +25,11 @@ export const getValueForAgreementType = (number: string, codeType: string) => {
   return Number((parseInt(value, 10) / 100.0).toFixed(2));
 };
 
-export const getValue = (number: string, type: string, codeType: string) => {
+export const getValue = (
+  number: string,
+  type: 'INVALIDO' | 'BANCO' | 'ARRECADACAO',
+  codeType: 'LINHA DIGITAVEL' | 'CODIGO DE BARRAS',
+) => {
   if (type === 'INVALIDO') return 0;
   if (type === 'BANCO') return getValueForBankType(number, codeType);
   if (type === 'ARRECADACAO') return getValueForAgreementType(number, codeType);
