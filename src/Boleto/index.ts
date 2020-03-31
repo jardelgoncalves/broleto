@@ -49,7 +49,7 @@ export class Boleto {
         : 0;
     }
 
-    return factor || factor === 0 ? new Date(febrabanDate.getTime() + factor) : null;
+    return factor || factor === 0 ? new Date(febrabanDate.getTime() + factor) : febrabanDate;
   }
 
   expired() {
@@ -73,5 +73,33 @@ export class Boleto {
   prettyAmount() {
     const value = this.amount();
     return currencyFormatter(value);
+  }
+
+  interest(value: number, percent = true, month = true) {
+    const valueBoleto = this.amount();
+    const { type } = this.type();
+
+    const expirationDate = this.expirationDate();
+    const daysExpired = differenceForNow(expirationDate);
+
+    if (type === 'BANCO') {
+      if (!value) {
+        return 'Informe o valor';
+      }
+      if (value && percent && month) {
+        return (((value / 100) / 30) * daysExpired) * valueBoleto;
+      }
+      if (value && percent && !month) {
+        return ((value / 100) * daysExpired) * valueBoleto;
+      }
+      if (value && !percent && month) {
+        return ((value / 30) * daysExpired);
+      }
+      if (value && !percent && !month) {
+        return (value * daysExpired);
+      }
+    }
+
+    return 0;
   }
 }
