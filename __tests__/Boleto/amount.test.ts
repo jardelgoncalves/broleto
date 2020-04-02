@@ -11,13 +11,23 @@ describe('Unit test Boleto/amount method', () => {
     expect(boleto.amount()).toBe(20.00);
   });
 
-  it('should return the amount of the payment slip if the bar code is valid', () => {
+  it('should return the value of the digitable line of the agrrement payment slip', () => {
     const boleto = new Boleto('34195844100000020005000001233203186422147000');
     expect(boleto.amount()).toBe(20.00);
   });
 
-  it('should return null if payment slip is invalid', () => {
-    const boleto = new Boleto('11110000101111.11111111111111114584410000002000');
-    expect(boleto.amount()).toBe(null);
+  it('should return the barcode value of the agrrement payment slip', () => {
+    const boleto = new Boleto('858600000004569503282005510708200426427234960440');
+    expect(boleto.amount()).toBe(56.95);
+  });
+
+  it('should return the amount of the payment slip if the bar code is valid', () => {
+    const boleto = new Boleto('85860000000569503282005107082004242723496044');
+    expect(boleto.amount()).toBe(56.95);
+  });
+
+  it('should return the value even if the digitable line is 46 characters long', () => {
+    const boleto = new Boleto('03399091456730000000600593201015973320000010000');
+    expect(boleto.amount()).toBe(100);
   });
 });
