@@ -1,5 +1,11 @@
 import {
-  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter, interstCalc, finesCalc,
+  maskCleaner,
+  typeMapping,
+  differenceForNow,
+  identifyBank,
+  currencyFormatter,
+  interstCalc,
+  finesCalc,
 } from '../utils/index';
 
 export class Boleto {
