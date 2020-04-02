@@ -1,5 +1,5 @@
 import {
-  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter,
+  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter, interstCalc,
 } from '../utils/index';
 
 export class Boleto {
@@ -75,31 +75,13 @@ export class Boleto {
     return currencyFormatter(value);
   }
 
-  interest(value: number, percent = true, month = true) {
+  interest(feesValue: number, percent = true, month = true) {
     const valueBoleto = this.amount();
     const { type } = this.type();
 
     const expirationDate = this.expirationDate();
     const daysExpired = differenceForNow(expirationDate);
 
-    if (type === 'BANCO') {
-      if (!value) {
-        return 'Informe o valor';
-      }
-      if (value && percent && month) {
-        return (((value / 100) / 30) * daysExpired) * valueBoleto;
-      }
-      if (value && percent && !month) {
-        return ((value / 100) * daysExpired) * valueBoleto;
-      }
-      if (value && !percent && month) {
-        return ((value / 30) * daysExpired);
-      }
-      if (value && !percent && !month) {
-        return (value * daysExpired);
-      }
-    }
-
-    return 0;
+    return interstCalc(valueBoleto, daysExpired, feesValue, type, percent, month);
   }
 }
