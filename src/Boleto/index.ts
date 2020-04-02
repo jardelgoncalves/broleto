@@ -6,6 +6,7 @@ import {
   currencyFormatter,
   isValid,
   getValue,
+  interstCalc
 } from '../utils/index';
 
 export class Boleto {
@@ -60,7 +61,7 @@ export class Boleto {
         : 0;
     }
 
-    return factor || factor === 0 ? new Date(febrabanDate.getTime() + factor) : null;
+    return factor || factor === 0 ? new Date(febrabanDate.getTime() + factor) : febrabanDate;
   }
 
   expired() {
@@ -87,7 +88,17 @@ export class Boleto {
     const value = this.amount();
     return currencyFormatter(value);
   }
+  
+  interest(feesValue: number, percent = true, month = true) {
+    const valueBoleto = this.amount();
+    const { type } = this.type();
 
+    const expirationDate = this.expirationDate();
+    const daysExpired = differenceForNow(expirationDate);
+
+    return interstCalc(valueBoleto, daysExpired, feesValue, type, percent, month);
+  }
+  
   valid() {
     return isValid(this.number);
   }
