@@ -4,9 +4,10 @@ import {
   differenceForNow,
   identifyBank,
   currencyFormatter,
+  finesCalc,
   isValid,
   getValue,
-  interstCalc
+  interstCalc,
 } from '../utils/index';
 
 export class Boleto {
@@ -66,7 +67,7 @@ export class Boleto {
 
   expired() {
     const expirationDate = this.expirationDate();
-    if (!expirationDate) return null;
+    if (!expirationDate) return false;
 
     return differenceForNow(expirationDate) > 0;
   }
@@ -88,7 +89,7 @@ export class Boleto {
     const value = this.amount();
     return currencyFormatter(value);
   }
-  
+
   interest(feesValue: number, percent = true, month = true) {
     const valueBoleto = this.amount();
     const { type } = this.type();
@@ -98,7 +99,15 @@ export class Boleto {
 
     return interstCalc(valueBoleto, daysExpired, feesValue, type, percent, month);
   }
-  
+
+  fines(value: number, percent = true) {
+    const valueBoleto = this.amount();
+    const expired = this.expired();
+    const { type } = this.type();
+
+    return finesCalc(valueBoleto, expired, type, value, percent);
+  }
+
   valid() {
     return isValid(this.number);
   }
