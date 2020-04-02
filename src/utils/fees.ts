@@ -26,3 +26,25 @@ export const interstCalc = (
 
   return 0;
 };
+
+export const finesCalc = (
+  valueBoleto: number,
+  expired: boolean,
+  type: string,
+  finesValue: number,
+  percent: boolean,
+) => {
+  if (type === 'BANCO' && expired) {
+    if (!finesValue) {
+      return 'Informe o valor';
+    }
+    if (finesValue && percent) {
+      return (finesValue <= 0 || finesValue > 2) ? 'Multa inválida' : (finesValue / 100) * valueBoleto;
+    }
+    if (finesValue && !percent) {
+      return finesValue > (0.02 * valueBoleto) ? 'Multa inválida' : finesValue;
+    }
+  }
+
+  return 0;
+};

@@ -1,5 +1,5 @@
 import {
-  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter, interstCalc,
+  maskCleaner, typeMapping, differenceForNow, identifyBank, currencyFormatter, interstCalc, finesCalc,
 } from '../utils/index';
 
 export class Boleto {
@@ -54,7 +54,7 @@ export class Boleto {
 
   expired() {
     const expirationDate = this.expirationDate();
-    if (!expirationDate) return null;
+    if (!expirationDate) return false;
 
     return differenceForNow(expirationDate) > 0;
   }
@@ -83,5 +83,13 @@ export class Boleto {
     const daysExpired = differenceForNow(expirationDate);
 
     return interstCalc(valueBoleto, daysExpired, feesValue, type, percent, month);
+  }
+
+  fines(value: number, percent = true) {
+    const valueBoleto = this.amount();
+    const expired = this.expired();
+    const { type } = this.type();
+
+    return finesCalc(valueBoleto, expired, type, value, percent);
   }
 }
