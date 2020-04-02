@@ -4,8 +4,10 @@ import {
   differenceForNow,
   identifyBank,
   currencyFormatter,
-  interstCalc,
   finesCalc,
+  isValid,
+  getValue,
+  interstCalc,
 } from '../utils/index';
 
 export class Boleto {
@@ -13,12 +15,17 @@ export class Boleto {
 
   constructor(number: string) {
     this.number = maskCleaner(number);
+
+    if (this.number.length === 46) {
+      this.number = `${this.number}0`;
+    }
   }
 
   codeType() {
-    if (this.number.length !== 44 || (this.number.length < 46 && this.number.length > 48)) { return 'INVALIDO'; }
+    if (this.number.length === 44) return 'CODIGO DE BARRAS';
+    if (this.number.length >= 46 && this.number.length <= 48) return 'LINHA DIGITAVEL';
 
-    return this.number.length === 44 ? 'CODIGO DE BARRAS' : 'LINHA DIGITAVEL';
+    return 'INVALIDO';
   }
 
   type() {
@@ -72,8 +79,10 @@ export class Boleto {
   }
 
   amount() {
-    const value = this.number.substr(-8, 8);
-    return Number((parseInt(value, 10) / 100.0).toFixed(2));
+    const type = this.type();
+    const codeType = this.codeType();
+
+    return getValue(this.number, type.type, codeType);
   }
 
   prettyAmount() {
@@ -97,5 +106,9 @@ export class Boleto {
     const { type } = this.type();
 
     return finesCalc(valueBoleto, expired, type, value, percent);
+  }
+
+  valid() {
+    return isValid(this.number);
   }
 }
