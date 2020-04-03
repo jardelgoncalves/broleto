@@ -35,22 +35,12 @@ export const finesCalc = (
   percent: boolean,
 ) => {
   if (type === 'BANCO' && expired) {
-    if (!finesValue) {
-      return 'Informe o valor';
+    if (!finesValue && typeof finesValue !== 'number') {
+      throw new TypeError('Tipo de valor informado para multa é inválido.');
     }
-    if (finesValue && percent) {
-      if (finesValue <= 0 || finesValue > 2) {
-        throw new Error('Porcentagem para multa ultrapassa o valor máximo permitido.');
-      }
-      return (finesValue / 100) * valueBoleto;
-    }
-    if (finesValue && !percent) {
-      if (finesValue > (0.02 * valueBoleto)) {
-        throw new Error('Valor para multa ultrapassa o valor máximo permitido.');
-      }
 
-      return finesValue;
-    }
+    if (finesValue && percent) return (finesValue / 100) * valueBoleto;
+    if (finesValue && !percent) return finesValue;
   }
 
   return 0;
