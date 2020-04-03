@@ -13,6 +13,9 @@ import {
 export class Boleto {
   private number: string
 
+  /**
+   * @param {string} number codigo de barras ou linha digitável de boletos bancários ou arrecadação
+   */
   constructor(number: string) {
     this.number = maskCleaner(number);
 
@@ -21,6 +24,13 @@ export class Boleto {
     }
   }
 
+  /**
+   * Identifica o tipo da numeração informada, se é código de barras, linha digitável ou inválida
+   *
+   * @return {string} CODIGO DE BARRAS
+   * @return {string} LINHA DIGITAVEL
+   * @return {string} INVALIDA
+   */
   codeType() {
     if (this.number.length === 44) return 'CODIGO DE BARRAS';
     if (this.number.length >= 46 && this.number.length <= 48) return 'LINHA DIGITAVEL';
@@ -28,6 +38,20 @@ export class Boleto {
     return 'INVALIDO';
   }
 
+  /**
+   * Identifica se o tipo do boleto é bancário ou arrecadação.
+   * Em caso de arrecação é retornado também o subtipo
+   *
+   * @return {object} {BANCO, ''}
+   * @return {object} {ARRECADACAO, ''}
+   * @return {object} {ARRECADACAO, ARRECADACAO_PREFEITURA}
+   * @return {object} {ARRECADACAO, CONVENIO_SANEAMENTO}
+   * @return {object} {ARRECADACAO, CONVENIO_ENERGIA_ELETRICA_E_GAS}
+   * @return {object} {ARRECADACAO, CONVENIO_TELECOMUNICACOES}
+   * @return {object} {ARRECADACAO, ARRECADACAO_ORGAOS_GOVERNAMENTAIS}
+   * @return {object} {ARRECADACAO, OUTROS}
+   * @return {object} {ARRECADACAO, ARRECADACAO_TAXAS_DE_TRANSITO}
+   */
   type() {
     const type = this.number.substr(0, 2);
 
@@ -41,6 +65,9 @@ export class Boleto {
     };
   }
 
+  /**
+   * Retorna a data de vencimento
+   */
   expirationDate() {
     const codeType = this.codeType();
     const typePaymentSlip = this.type();
@@ -65,6 +92,11 @@ export class Boleto {
     return factor || factor === 0 ? new Date(febrabanDate.getTime() + factor) : febrabanDate;
   }
 
+  /**
+   * Verifica se o boleto esta vencido
+   *
+   * @return {boolean} true | false
+   */
   expired() {
     const expirationDate = this.expirationDate();
     if (!expirationDate) return false;
@@ -72,12 +104,26 @@ export class Boleto {
     return differenceForNow(expirationDate) > 0;
   }
 
+  /**
+   * Retorna a quantdade de dias vencidos
+   */
+  expiredDays() {
+    const expirationDate = this.expirationDate();
+    return this.expired() ? differenceForNow(expirationDate) : 0;
+  }
+
+  /**
+   * Retorna o nome do banco
+   */
   banks() {
     const cod = this.number.substr(0, 3);
 
     return identifyBank(cod);
   }
 
+  /**
+   * Retorna o valor do boleto
+   */
   amount() {
     const type = this.type();
     const codeType = this.codeType();
@@ -85,29 +131,62 @@ export class Boleto {
     return getValue(this.number, type.type, codeType);
   }
 
+  /**
+   * Retorna o valor do boleto formatado (BRL)
+   */
   prettyAmount() {
     const value = this.amount();
     return currencyFormatter(value);
   }
 
-  interest(feesValue: number, percent = true, month = true) {
+  /**
+   * Calcula e retorna o juros do boleto
+   *
+   * @param {interestValuenumber}  Porcentagem ou valor cobrado.
+   * @param {number|boolean} expiredDays  Quantidade de dias vencidos, caso não informe a quantidade
+   * ou informe false para este parâmetro, a quantidade de dias vencido é retirado do boleto.
+   * @param {boolean} percent Forma de cobrança, por padrão é habilitado como porcentagem
+   * caso seja em reais, atribua false
+   * @param {boolean} month Informe se o juros é cobrado ao mês ou ao dia, para dia informe false
+   *
+   */
+  interest(
+    interestValue: number,
+    expiredDays:number | boolean = false,
+    percent = true,
+    month = true,
+  ) {
     const valueBoleto = this.amount();
     const { type } = this.type();
 
     const expirationDate = this.expirationDate();
-    const daysExpired = differenceForNow(expirationDate);
+    const days = (expiredDays === false) || (expiredDays === true)
+      ? differenceForNow(expirationDate)
+      : expiredDays;
 
-    return interstCalc(valueBoleto, daysExpired, feesValue, type, percent, month);
+    return interstCalc(valueBoleto, days, interestValue, type, percent, month);
   }
 
-  fines(value: number, percent = true) {
+  /**
+   * Calcula e retorna a multa do boleto
+   *
+   * @param {number} finesValue Porcentagem ou valor cobrada.
+   * @param {boolean} percent Forma de cobrança, por padrão é habilitado como porcentagem
+   * caso seja em reais, atribua false
+   */
+  fines(finesValue: number, percent = true) {
     const valueBoleto = this.amount();
     const expired = this.expired();
     const { type } = this.type();
 
-    return finesCalc(valueBoleto, expired, type, value, percent);
+    return finesCalc(valueBoleto, expired, type, finesValue, percent);
   }
 
+  /**
+   * Verifica se o boleto é valido
+   *
+   * @return {boolean} true | false
+   */
   valid() {
     return isValid(this.number);
   }
