@@ -6,3 +6,4 @@ export * from './identifyBank';
 export * from './fees';
 export * from './isValid';
 export * from './getValue';
+export * from './toBarcode';

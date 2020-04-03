@@ -8,6 +8,8 @@ import {
   isValid,
   getValue,
   interstCalc,
+  toBarcodeAgreement,
+  toBarcodeBank,
 } from '../utils/index';
 
 export class Boleto {
@@ -189,5 +191,35 @@ export class Boleto {
    */
   valid() {
     return isValid(this.number);
+  }
+
+  /**
+   * Retorna um objeto com todas informações do boleto.
+   *
+   * @return {object | null}
+   */
+  toJSON() {
+    const codeType = this.codeType();
+    const { type } = this.type();
+
+
+    if (codeType === 'INVALIDO') return null;
+
+    let typ = '';
+    if (type === 'BANCO') typ = codeType === 'LINHA DIGITAVEL' ? toBarcodeBank(this.number) : this.number;
+    if (type === 'ARRECADACO') typ = codeType === 'LINHA DIGITAVEL' ? toBarcodeAgreement(this.number) : this.number;
+
+    return {
+      barcode:
+      codeType,
+      type: typ,
+      expirationDate: this.expirationDate(),
+      expired: this.expired(),
+      expiredDays: this.expiredDays(),
+      banks: this.banks(),
+      amount: this.amount(),
+      prettyAmount: this.prettyAmount(),
+      valid: this.valid(),
+    };
   }
 }
