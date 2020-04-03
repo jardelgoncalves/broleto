@@ -31,7 +31,7 @@ export class Boleto {
    *
    * @return {string} CODIGO DE BARRAS
    * @return {string} LINHA DIGITAVEL
-   * @return {string} INVALIDA
+   * @return {string} INVALIDO
    */
   codeType() {
     if (this.number.length === 44) return 'CODIGO DE BARRAS';
@@ -100,6 +100,9 @@ export class Boleto {
    * @return {boolean} true | false
    */
   expired() {
+    const { type } = this.type();
+    if (type === 'ARRECADACAO') return false;
+
     const expirationDate = this.expirationDate();
     if (!expirationDate) return false;
 
@@ -110,6 +113,9 @@ export class Boleto {
    * Retorna a quantdade de dias vencidos
    */
   expiredDays() {
+    const { type } = this.type();
+    if (type === 'ARRECADACAO') return 0;
+
     const expirationDate = this.expirationDate();
     return this.expired() ? differenceForNow(expirationDate) : 0;
   }
@@ -203,16 +209,16 @@ export class Boleto {
     const { type } = this.type();
 
 
-    if (codeType === 'INVALIDO') return null;
+    if (codeType === 'INVALIDO' || !this.valid()) return null;
 
-    let typ = '';
-    if (type === 'BANCO') typ = codeType === 'LINHA DIGITAVEL' ? toBarcodeBank(this.number) : this.number;
-    if (type === 'ARRECADACO') typ = codeType === 'LINHA DIGITAVEL' ? toBarcodeAgreement(this.number) : this.number;
+    let bar = '';
+    if (type === 'BANCO') bar = codeType === 'LINHA DIGITAVEL' ? toBarcodeBank(this.number) : this.number;
+    if (type === 'ARRECADACAO') bar = codeType === 'LINHA DIGITAVEL' ? toBarcodeAgreement(this.number) : this.number;
 
     return {
-      barcode:
+      barcode: bar,
       codeType,
-      type: typ,
+      type,
       expirationDate: this.expirationDate(),
       expired: this.expired(),
       expiredDays: this.expiredDays(),
