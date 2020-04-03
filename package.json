@@ -1,7 +1,7 @@
 {
   "name": "broleto",
-  "version": "0.0.5",
-  "description": "Uma biblioteca para validar, formatar e obter informações do boletos.",
+  "version": "0.0.6",
+  "description": "Valide e/ou obtenha dados de boletos bancário ou arrecadação de forma fácil.",
   "main": "dist/index.js",
 	"module": "dist/index.es.js",
 	"files": [
