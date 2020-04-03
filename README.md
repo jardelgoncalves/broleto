@@ -158,3 +158,6 @@ boleto.toJSON();
   </tr>
 </table>
 
+## License
+
+MIT © <a href="https://github.com/jardelgoncalves">Jardel Gonçalves</a>
