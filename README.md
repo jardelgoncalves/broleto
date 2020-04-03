@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="200">
+  <img src="https://raw.githubusercontent.com/jardelgoncalves/broleto/master/logo.png" width="200">
 </p>
 
 <h3 align="center">
@@ -17,6 +17,14 @@ Uma biblioteca que suporta validação e obtenção de boletos bancários ou arr
 import { Boelto } from "broleto"
 
 const boleto = new Boleto('34191091070000013555851122200002157810000115300');
+```
+
+### Verificando se o boleto é válido
+```js
+boleto.valid();
+// output
+
+true
 ```
 
 ### Obtendo o banco emissor
