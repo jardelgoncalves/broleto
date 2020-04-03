@@ -7,8 +7,8 @@ export const interstCalc = (
   month: boolean,
 ) => {
   if (type === 'BANCO') {
-    if (!feesValue) {
-      return 'Informe o valor';
+    if (!feesValue && typeof feesValue !== 'number') {
+      throw new TypeError('Tipo de valor informado para juros é inválido.');
     }
     if (feesValue && percent && month) {
       return (((feesValue / 100) / 30) * daysExpired) * valueBoleto;
@@ -39,10 +39,17 @@ export const finesCalc = (
       return 'Informe o valor';
     }
     if (finesValue && percent) {
-      return (finesValue <= 0 || finesValue > 2) ? 'Multa inválida' : (finesValue / 100) * valueBoleto;
+      if (finesValue <= 0 || finesValue > 2) {
+        throw new Error('Porcentagem para multa ultrapassa o valor máximo permitido.');
+      }
+      return (finesValue / 100) * valueBoleto;
     }
     if (finesValue && !percent) {
-      return finesValue > (0.02 * valueBoleto) ? 'Multa inválida' : finesValue;
+      if (finesValue > (0.02 * valueBoleto)) {
+        throw new Error('Valor para multa ultrapassa o valor máximo permitido.');
+      }
+
+      return finesValue;
     }
   }
 
