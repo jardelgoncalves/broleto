@@ -14,7 +14,7 @@ Uma biblioteca que suporta validação e obtenção de boletos bancários ou arr
 
 ## Uso
 ```js
-import { Boelto } from "broleto"
+import { Boleto } from "broleto"
 
 const boleto = new Boleto('34191091070000013555851122200002157810000115300');
 ```
