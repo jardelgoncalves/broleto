@@ -106,7 +106,8 @@ export class Boleto {
     const expirationDate = this.expirationDate();
     if (!expirationDate) return false;
 
-    return differenceForNow(expirationDate) > 0;
+    const [days, past] = differenceForNow(expirationDate);
+    return Boolean(days > 0 && past);
   }
 
   /**
@@ -117,7 +118,9 @@ export class Boleto {
     if (type === 'ARRECADACAO') return 0;
 
     const expirationDate = this.expirationDate();
-    return this.expired() ? differenceForNow(expirationDate) : 0;
+    const [days] = differenceForNow(expirationDate);
+
+    return this.expired() ? days : 0;
   }
 
   /**
@@ -160,7 +163,7 @@ export class Boleto {
    */
   interest(
     interestValue: number,
-    expiredDays:number | boolean = false,
+    expiredDays:number,
     percent = true,
     month = true,
   ) {
@@ -168,8 +171,10 @@ export class Boleto {
     const { type } = this.type();
 
     const expirationDate = this.expirationDate();
-    const days = (expiredDays === false) || (expiredDays === true)
-      ? differenceForNow(expirationDate)
+    const [daysDiff] = differenceForNow(expirationDate);
+
+    const days = typeof expiredDays !== 'number' && typeof daysDiff === 'number'
+      ? daysDiff
       : expiredDays;
 
     return interstCalc(valueBoleto, days, interestValue, type, percent, month);

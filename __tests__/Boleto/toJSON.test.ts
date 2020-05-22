@@ -12,8 +12,8 @@ describe('Unit test Boleto/toJSON method', () => {
       expect(info.banks).toBe('Itaú Unibanco S.A');
       expect(info.type).toBe('BANCO');
       expect(info.expirationDate instanceof Date).toBe(true);
-      expect(info.expired).toBe(true);
-      expect(info.expiredDays > 100).toBe(true);
+      expect(info.expired).toBe(false);
+      expect(typeof info.expiredDays === 'number').toBe(true);
       expect(info.amount).toBe(20);
       expect(info.valid).toBe(true);
     }
@@ -34,6 +34,23 @@ describe('Unit test Boleto/toJSON method', () => {
       expect(info.expired).toBe(false);
       expect(info.expiredDays).toBe(0);
       expect(info.amount).toBe(57.25);
+      expect(info.valid).toBe(true);
+    }
+  });
+  it('should return an object with all the information with boleto expired', () => {
+    const boleto = new Boleto('34191091070000013555851122200002157810000115300');
+    const info = boleto.toJSON();
+
+    expect(info !== null).toBe(true);
+
+    if (info !== null) {
+      expect(info.barcode).toBe('34191578100001153001091000000135555112220000');
+      expect(info.banks).toBe('Itaú Unibanco S.A');
+      expect(info.type).toBe('BANCO');
+      expect(info.codeType).toBe('LINHA DIGITAVEL');
+      expect(info.expirationDate instanceof Date).toBe(true);
+      expect(info.expired).toBe(true);
+      expect(info.amount).toBe(1153);
       expect(info.valid).toBe(true);
     }
   });
