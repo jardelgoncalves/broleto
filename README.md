@@ -140,6 +140,17 @@ boleto.toJSON();
   valid: true
 }
 ```
+## Como contribuir
+- Faça um Fork desse repositório,
+- Faça um clone do respositório criado a partir do fork: `git clone https://github.com/<seu username>/broleto.git`
+- Crie uma branch com a sua feature: `git checkout -b feat/minha-feature-de-examplo`
+- Commit suas mudanças: `git commit -m "feat: Minha nova feature"` (**Ver regras para commits**)
+- Faça o push da sua branch: `git push origin feat/minha-feature-de-examplo`
+- Ir em pull requests do projeto original e crie uma pull request com o seu commit.
+
+### Regras para commits
+- Para cada commit siga a padronização do [commitlint](https://github.com/conventional-changelog/commitlint/#what-is-commitlint)
+- evite commits acima de 70 caracteres
 
 
 ## Contribuidores
