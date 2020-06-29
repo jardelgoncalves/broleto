@@ -7,7 +7,7 @@ export const identifyBank = (cod: string) => {
     33: 'Banco Santander (Brasil) S.A',
     36: 'Banco Bradesco BBI S.A',
     341: 'Itaú Unibanco S.A',
-    104: 'Caixa Econômica Federal',
+    104: 'Caixa Econ Federal',
   };
 
   return banks[Number(cod)] || 'Unknown';
