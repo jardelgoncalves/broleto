@@ -1,3 +1,6 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Boleto } from '../../src/index';
 
 describe('Unit test Boleto/expired method', () => {
@@ -6,7 +9,8 @@ describe('Unit test Boleto/expired method', () => {
     expect(boleto.expired()).toBe(true);
   });
   it('should return if the boleto has not expired.', () => {
-    const boleto = new Boleto('34195.00008 01233.203189 64221.470004 5 84410000002000');
+    const boleto = new Boleto('34195000080123320318964221470004584410000002000');
+    jest.spyOn<any, any>(boleto, 'expirationDate').mockImplementation(() => new Date());
     expect(boleto.expired()).toBe(false);
   });
 });

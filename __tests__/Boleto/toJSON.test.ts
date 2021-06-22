@@ -1,15 +1,18 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Boleto } from '../../src/index';
 
 describe('Unit test Boleto/toJSON method', () => {
   it('should return an object with all the information', () => {
     const boleto = new Boleto('34195.00008 01233.203189 64221.470004 5 84410000002000');
+    jest.spyOn<any, any>(boleto, 'expirationDate').mockImplementation(() => new Date());
     const info = boleto.toJSON();
 
     expect(info !== null).toBe(true);
 
     if (info !== null) {
       expect(info.barcode).toBe('34195844100000020005000001233203186422147000');
-      expect(info.banks).toBe('Itaú Unibanco S.A');
+      expect(info.banks).toBe('ITAÚ UNIBANCO S.A.');
       expect(info.type).toBe('BANCO');
       expect(info.expirationDate instanceof Date).toBe(true);
       expect(info.expired).toBe(false);
@@ -45,7 +48,7 @@ describe('Unit test Boleto/toJSON method', () => {
 
     if (info !== null) {
       expect(info.barcode).toBe('34191578100001153001091000000135555112220000');
-      expect(info.banks).toBe('Itaú Unibanco S.A');
+      expect(info.banks).toBe('ITAÚ UNIBANCO S.A.');
       expect(info.type).toBe('BANCO');
       expect(info.codeType).toBe('LINHA DIGITAVEL');
       expect(info.expirationDate instanceof Date).toBe(true);

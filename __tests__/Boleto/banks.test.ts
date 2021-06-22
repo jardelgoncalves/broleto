@@ -4,7 +4,7 @@ describe('Unit test Boleto/banks method', () => {
   it('should return bank name', () => {
     const boleto = new Boleto('34195.00008 01233.203189 64221.470004 5 84410000002000');
 
-    expect(boleto.banks()).toBe('Itaú Unibanco S.A');
+    expect(boleto.banks()).toBe('ITAÚ UNIBANCO S.A.');
   });
 
   it('should return Unknown type is aggrement or not on our list', () => {
