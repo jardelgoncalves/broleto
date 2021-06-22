@@ -1,6 +1,6 @@
 {
-  "name": "broleto",
-  "version": "0.0.10",
+  "name": "@jardelgoncalves/broleto",
+  "version": "0.0.11",
   "description": "Valide e/ou obtenha dados de boletos bancário ou arrecadação de forma fácil.",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
@@ -18,7 +18,7 @@
     "lint": "tslint -p tsconfig.json"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@jardelgoncalves"
+    "registry": "https://npm.pkg.github.com/"
   },
   "repository": {
     "type": "git",
