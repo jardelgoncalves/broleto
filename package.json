@@ -17,7 +17,9 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/@jardelgoncalves" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@jardelgoncalves"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jardelgoncalves/broleto.git"
@@ -46,7 +48,7 @@
     "@commitlint/config-conventional": "^11.0.0",
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^26.0.23",
     "@typescript-eslint/eslint-plugin": "^2.24.0",
     "@typescript-eslint/parser": "^2.24.0",
     "eslint": "^6.8.0",
@@ -56,7 +58,7 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-prettier": "^3.1.2",
     "husky": "^4.2.3",
-    "jest": "^25.1.0",
+    "jest": "^25.2.2",
     "prettier": "^1.19.1",
     "rollup": "^2.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
