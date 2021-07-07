@@ -163,7 +163,7 @@ export class Boleto {
    */
   interest(
     interestValue: number,
-    expiredDays:number,
+    expiredDays: number,
     percent = true,
     month = true,
   ) {
@@ -212,7 +212,6 @@ export class Boleto {
   toJSON() {
     const codeType = this.codeType();
     const { type } = this.type();
-
 
     if (codeType === 'INVALIDO' || !this.valid()) return null;
 
