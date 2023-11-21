@@ -9,7 +9,7 @@ export const digitableLineTransform = {
    * const result = toBarcode.bank('33690000090000001000910721762432181580000235000');
    * console.log(result); // Output: '33691815800002350000000000000010001072176243'
    */
-  toBarcodebank: (number: string) =>
+  toBarcodeBank: (number: string) =>
     number.replace(
       /^(\d{4})(\d{5})\d{1}(\d{10})\d{1}(\d{10})\d{1}(\d{15})$/,
       "$1$5$2$3$4",
