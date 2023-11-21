@@ -1,1 +1,1 @@
-![example workflow](https://github.com/jardelgoncalves/broleto/actions/workflows/unit-testing.yaml/badge.svg)
+![Tests](https://github.com/jardelgoncalves/broleto/actions/workflows/unit-testing.yaml/badge.svg)
